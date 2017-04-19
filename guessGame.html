@@ -1,0 +1,93 @@
+<!-- Luis Rey Sánchez -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Guess Game</title>
+    <style media="screen">
+      #photoID{
+        position: absolute;
+        left: 9px;
+      }
+      #winLosePhoto{
+        position: absolute;
+        top: 50px;
+        left: 40px;
+        /* Rotate div */
+        -ms-transform: rotate(12deg); /* IE 9 */
+        -webkit-transform: rotate(12deg); /* Chrome, Safari, Opera */
+        transform: rotate(12deg);
+      }
+    </style>
+  </head>
+  <body>
+      <h1>Welcome to the Guess Game</h1>
+      <div id="myDiv">Introduce a number between 1 and 100.</div>
+      <input type="number" name="" id="userNumber" value="" placeholder="Write a number">
+      <button type="button" name="button" id="makeGuess" onclick="checkNumber()">Guess!</button>
+      <br>
+      <div id="photo">
+        <img src="img/scale.png" alt="">
+        <img src="img/arrow.png" alt="" id="photoID">
+      </div>
+      <div id="winLosePhoto"></div>
+
+      <script type="text/javascript">
+      var userInput;
+      var userButton;
+      var randomNum;
+      var imageDiv;
+      const MAX_CHANCES = 10;
+      var chances = 0;
+
+        window.onload = function(){
+          userInput = document.getElementById("userNumber");
+          showText = document.getElementById("myDiv");
+          imageID = document.getElementById('photoID');
+          winLosePhotoDiv = document.getElementById('winLosePhoto');
+
+          randomNum = Math.floor((Math.random() * 100) + 1); // To get a number between 1 and 100
+        }
+
+
+        function checkNumber(){
+
+          if (userInput.value == "") {
+            showText.innerHTML = '<b style="color:orange">Write something!</b>';
+          }else {
+          var userInputInt = parseInt(userInput.value);
+
+          var arrowPos = ((userInputInt * 298)/100)+9; //This is to calculate where the arrow should be.
+          imageID.style.left = arrowPos + "px";
+
+          if (userInputInt > 100 || userInputInt < 0) {
+            showText.innerHTML = '<b style="color:orange">Number out of range! It has to be between 1 and 100</b>';
+          }else {
+            if (chances > MAX_CHANCES) {
+                showText.innerHTML = '<b style="color:red">No more chances! You LOSE. The number was ' + randomNum + '</b>';
+                winLosePhotoDiv.innerHTML = '<img src="img/winLose.png" alt="" style="clip:rect(33px,178px,66px,0px); position:absolute;">';
+            }else {
+              chances++;
+          if (userInputInt > randomNum) {
+              showText.innerHTML = "The secret number is smaller. Guess: " + chances + " Remaining: " + (MAX_CHANCES-chances);
+              if (chances > MAX_CHANCES) {
+                  showText.innerHTML = '<b style="color:red">No more chances! You LOSE. The number was ' + randomNum + '</b>';
+                  winLosePhotoDiv.innerHTML = '<img src="img/winLose.png" alt="" style="clip:rect(33px,178px,66px,0px); position:absolute;">';
+              }
+          }else if(userInputInt < randomNum) {
+              showText.innerHTML = "The secret number is bigger. Guess: " + chances + " Remaining: " + (MAX_CHANCES-chances);
+              if (chances > MAX_CHANCES) {
+                  showText.innerHTML = '<b style="color:red">No more chances! You LOSE. The number was ' + randomNum + '</b>';
+                  winLosePhotoDiv.innerHTML = '<img src="img/winLose.png" alt="" style="clip:rect(33px,178px,66px,0px); position:absolute;">';
+              }
+          }else {
+              showText.innerHTML = '<b style="color:green">We have a WINNER!</b>';
+              winLosePhotoDiv.innerHTML = '<img src="img/winLose.png" alt="" style="clip:rect(0px,178px,33px,0px); position:absolute;">';
+          }
+          }
+        }
+        }
+        }
+      </script>
+  </body>
+</html>
